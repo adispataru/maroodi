@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	
+<server xmlns="http://mina.apache.org/ftpserver/spring/v1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	   http://mina.apache.org/ftpserver/spring/v1 http://mina.apache.org/ftpserver/ftpserver-1.0.xsd	
+	   "
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	id="myServer">
+	<listeners>
+		<nio-listener name="default" port="2121">
+		    <ssl>
+                <keystore file="./res/ftpserver.jks" password="password" />
+            </ssl>
+		</nio-listener>
+	</listeners>
+	<file-user-manager file="./res/conf/users.properties" />
+	<ftplets>
+	  <ftplet name="UploadHandler">
+	    <beans:bean class="eu.scape_project.HDFSFTPServer.handlers.UploadHandler">
+	    </beans:bean>
+	  </ftplet>
+	</ftplets>
+</server>
