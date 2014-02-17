@@ -29,11 +29,15 @@ public class UploadHandler extends DefaultFtplet{
 	        File file = getRealFile(session, ftpFile);
 	        String filePath = file.getAbsolutePath();
 	        
-	        if(hdfsUploader == null){
-	        	//If the uploader hasn't been initialized, it means it will run locally and it will 
-	        	//put the file in the directory user/scape from HDFS.
-	        	hdfsUploader = new HDFSUploader("user/scape");
-	        }
+	        
+        	String dest = "/user/scape/" + session.getUser().getName() + "/" + filePath.substring(filePath.lastIndexOf("/") + 1);
+        	System.out.println(dest);
+        	hdfsUploader = new HDFSUploader(dest);
+	        
+	        
+	        System.out.printf("About to upload to HDFS file %s\n", filePath);
+	        
+	        //TODO Treat exception in case of hdfs problem
 	        
 	        hdfsUploader.upload(filePath);
 	        

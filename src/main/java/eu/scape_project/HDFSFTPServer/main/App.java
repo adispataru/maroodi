@@ -1,14 +1,21 @@
 package eu.scape_project.HDFSFTPServer.main;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import org.apache.ftpserver.FtpServer;
 import org.apache.ftpserver.FtpServerFactory;
 import org.apache.ftpserver.ftplet.FtpException;
+import org.apache.ftpserver.ftplet.Ftplet;
 import org.apache.ftpserver.listener.ListenerFactory;
 import org.apache.ftpserver.ssl.SslConfigurationFactory;
 import org.apache.ftpserver.usermanager.PropertiesUserManagerFactory;
+
+import eu.scape_project.HDFSFTPServer.handlers.UploadHandler;
+
+ 
 
 
 public class App{
@@ -37,7 +44,9 @@ public class App{
 		// start the server
 		FtpServer server = serverFactory.createServer();
 		server.start();
-		
+		Map<String, Ftplet> ftplets = new HashMap<String, Ftplet>();
+        ftplets.put("myftplet", new UploadHandler());
+        serverFactory.setFtplets(ftplets);
 		Scanner in = new Scanner(System.in);
 		
 		while(true){
