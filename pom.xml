@@ -3,10 +3,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>eu.scape-project</groupId>
-  <artifactId>HDFSFTPServer</artifactId>
+  <artifactId>Maroodi</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
-  <name>HDFSFTPServer</name>
+  <name>Maroodi</name>
   <url>http://maven.apache.org</url>
 
   <repositories>
