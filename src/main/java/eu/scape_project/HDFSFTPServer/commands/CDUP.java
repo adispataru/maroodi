@@ -25,7 +25,7 @@ public class CDUP extends AbstractCommand {
 		
 		session.resetState();
 
-		FileSystem fs = HadoopEnv.getFileSystem(session.getUser().getName());
+		FileSystem fs = HadoopEnv.getFileSystem(session.getUser(), session);
 		String dirName = fs.getWorkingDirectory().toString();
 		dirName = dirName.substring(0, dirName.lastIndexOf("/"));
 		

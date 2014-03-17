@@ -207,7 +207,7 @@ public class PASS extends AbstractCommand{
             session.setLogin(fsview);
             stat.setLogin(session);
             stat.getCurrentUserLoginNumber(authenticatedUser);
-            HadoopEnv.createFileSystem(authenticatedUser.getName());
+            HadoopEnv.createFileSystem(authenticatedUser, session);
 
             // everything is fine - send login ok message
             session.write(LocalizedFtpReply.translate(session, request, context,

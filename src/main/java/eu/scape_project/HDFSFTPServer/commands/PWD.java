@@ -21,7 +21,7 @@ public class PWD extends AbstractCommand {
 		
 		String userName = session.getUser().getName();
 		
-		FileSystem fs = HadoopEnv.getFileSystem(userName);
+		FileSystem fs = HadoopEnv.getFileSystem(session.getUser(), session);
 		
 		String currDir = fs.getWorkingDirectory().toString();
 		

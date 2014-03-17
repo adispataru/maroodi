@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.ftpserver.ftplet.User;
+import org.apache.ftpserver.impl.FtpIoSession;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -16,32 +17,46 @@ public class HadoopEnv {
 	
 	private static Map<String, FileSystem> fss = new HashMap<String, FileSystem>();
 	
-	public static FileSystem getFileSystem(String user) throws IOException{
-		if(fss.containsKey(user)){
-			return fss.get(user);
+	public static FileSystem getFileSystem(User user, FtpIoSession session) throws IOException{
+		
+		String userKey = user.getName() + String.valueOf(session.
+				getLoginTime().getTime());
+		
+		
+		if(fss.containsKey(userKey)){
+			return fss.get(userKey);
 		}
 		
-		FileSystem fs = createFileSystem(user);
-		fs.setWorkingDirectory(new Path(USER_PATH + user));
+		FileSystem fs = createFileSystem(user, session);
+		
 		
 		return fs;
 	}
 	
 	
-	public static FileSystem createFileSystem(String user)throws IOException{
+	public static FileSystem createFileSystem(User user, FtpIoSession session)throws IOException{
 		Configuration conf = new Configuration();
 		
 		Path coreSitePath = new Path(HADOOP_HOME, "conf/core-site.xml");
 		conf.addResource(coreSitePath);
-			
+		conf.setBoolean("fs.hdfs.impl.disable.cache", true);
+		
+		
 		FileSystem fs = FileSystem.get(conf);
-		fss.put(user, fs);
+		String userKey = user.getName() + String.valueOf(session.
+				getLoginTime().getTime());
+		System.out.println("User key: " + userKey);
+		fss.put(userKey, fs);
+		fs.setWorkingDirectory(new Path(USER_PATH + user.getName()));
 		return fs;
 	}
 	
 	
-	public static void removeFileSystem(String user){
-		fss.remove(user);
+	public static void removeFileSystem(User user, FtpIoSession session){
+		String userKey = user.getName() + String.valueOf(session.
+				getLoginTime().getTime());
+		
+		fss.remove(userKey);
 	}
 	
 	public static Path getHomeDirectory(User user){

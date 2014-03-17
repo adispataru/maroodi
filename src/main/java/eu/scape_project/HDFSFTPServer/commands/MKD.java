@@ -38,7 +38,7 @@ public class MKD extends AbstractCommand {
 
         
         // get file object
-        FileSystem fs = HadoopEnv.getFileSystem(session.getUser().getName());
+        FileSystem fs = HadoopEnv.getFileSystem(session.getUser(), session);
         Path filePath = null;
         if(fileName.charAt(0) == '/'){
         	filePath = new Path(HadoopEnv.getHomeDirectory(session.getUser())

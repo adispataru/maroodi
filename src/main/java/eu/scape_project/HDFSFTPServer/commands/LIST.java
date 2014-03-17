@@ -42,7 +42,7 @@ public class LIST extends AbstractCommand{
 					request.getArgument());
 			
 			//Create connection with hadoop and get OutputStream
-			FileSystem fs = HadoopEnv.getFileSystem(session.getUser().getName());
+			FileSystem fs = HadoopEnv.getFileSystem(session.getUser(), session);
 			Path workDir = fs.getWorkingDirectory();
 			
 			fs.setWorkingDirectory(workDir);
@@ -93,8 +93,7 @@ public class LIST extends AbstractCommand{
 			boolean failure = false;
 			try {
 				FileFormatter hdfsff = new LISTFileFormater();
-				String ls = directoryLister.listFiles(session.getUser().
-						getName(), parsedArg, hdfsff);
+				String ls = directoryLister.listFiles(fs, parsedArg, hdfsff);
 				Log.info(ls);
 				dataConnection.transferToClient(session.getFtpletSession(), ls);
 				

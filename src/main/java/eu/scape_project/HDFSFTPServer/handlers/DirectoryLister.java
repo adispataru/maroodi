@@ -7,19 +7,15 @@ import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
-import eu.scape_project.HDFSFTPServer.env.HadoopEnv;
-
 public class DirectoryLister {
 	
 	private FileFormatter formatter = null;
 	
-	public String listFiles(final String username, ListArgument arg, FileFormatter f) throws IOException{
+	public String listFiles(final FileSystem fs, ListArgument arg, FileFormatter f) throws IOException{
 		
 		formatter = f;
 			
 		StringBuilder sb = new StringBuilder();
-		
-		FileSystem fs = HadoopEnv.getFileSystem(username);
 		
 		FileStatus[] files = fs.listStatus(new Path(fs.getWorkingDirectory(), arg.getFile()));
 		if(files != null){

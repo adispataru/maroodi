@@ -47,7 +47,7 @@ public class MLSD extends AbstractCommand{
             session.resetState();
             
           //Create connection with hadoop and get OutputStream
-            FileSystem fs = HadoopEnv.getFileSystem(session.getUser().getName());
+            FileSystem fs = HadoopEnv.getFileSystem(session.getUser(), session);
 			Path workDir = fs.getWorkingDirectory();
 			
 			
@@ -107,7 +107,7 @@ public class MLSD extends AbstractCommand{
                         .getAttribute("MLST.types"));
 
                 dataConnection.transferToClient(session.getFtpletSession(), 
-                		directoryLister.listFiles(session.getUser().getName(),
+                		directoryLister.listFiles(fs,
                         parsedArg, formater));
             } catch (SocketException ex) {
                 LOG.debug("Socket exception during data transfer", ex);

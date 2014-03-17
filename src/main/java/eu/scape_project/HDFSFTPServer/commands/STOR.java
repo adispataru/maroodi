@@ -43,7 +43,7 @@ public class STOR extends AbstractCommand{
 						"HDFSSTOR", null));
 				return;
 			}
-			FileSystem fs = HadoopEnv.getFileSystem(user.getName());
+			FileSystem fs = HadoopEnv.getFileSystem(user, session);
 			
 			Path filePath;
 			if(fileName.charAt(0) == '/'){

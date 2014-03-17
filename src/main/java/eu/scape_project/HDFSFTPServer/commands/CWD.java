@@ -28,7 +28,7 @@ public class CWD extends AbstractCommand{
 		session.resetState();
 
         // change directory
-		FileSystem fs = HadoopEnv.getFileSystem(session.getUser().getName());
+		FileSystem fs = HadoopEnv.getFileSystem(session.getUser(), session);
 		
 		String dirName = HadoopEnv.getHomeDirectory(session.getUser()).toString();
 		
