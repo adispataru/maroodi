@@ -2,6 +2,7 @@ package eu.scape_project.HDFSFTPServer.main;
 
 import java.io.Console;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +21,8 @@ import org.apache.ftpserver.usermanager.PropertiesUserManagerFactory;
 import org.apache.ftpserver.usermanager.SaltedPasswordEncryptor;
 import org.apache.ftpserver.usermanager.impl.BaseUser;
 import org.apache.ftpserver.usermanager.impl.WritePermission;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eu.scape_project.HDFSFTPServer.commands.APPE;
 import eu.scape_project.HDFSFTPServer.commands.CDUP;
@@ -33,17 +36,21 @@ import eu.scape_project.HDFSFTPServer.commands.PWD;
 import eu.scape_project.HDFSFTPServer.commands.RETR;
 import eu.scape_project.HDFSFTPServer.commands.RMD;
 import eu.scape_project.HDFSFTPServer.commands.STOR;
-
-
-
-
- 
-
+import eu.scape_project.HDFSFTPServer.env.HadoopEnv;
 
 public class App{
  
-	
+	private static final Logger LOG = LoggerFactory.getLogger(App.class);
 	public static void main(String[] args) throws FtpException{
+		
+		try {
+			HadoopEnv.init();
+			LOG.info("Hadoop Environment successfully initiated.");
+		} catch (FileNotFoundException e) {
+			
+			LOG.debug("Cannot find configuration file for hadoop environment!", e);
+		}
+		
 		FtpServerFactory serverFactory = new FtpServerFactory();
 		ListenerFactory factory = new ListenerFactory();
 		
@@ -64,7 +71,7 @@ public class App{
 		CommandFactory commandFactory = cf.createCommandFactory();
 		
 		// set the port of the listener
-		//factory.setPort(21);
+		//factory.setPort(2221);
 		//factory.setServerAddress("localhost");
 		// define SSL configuration
 		SslConfigurationFactory ssl = new SslConfigurationFactory();
@@ -127,5 +134,8 @@ public class App{
 		in.close();
 
 	}
+	
+	
+	
 
 }

@@ -200,6 +200,7 @@ public class PASS extends AbstractCommand{
                 return;
             }
 
+            
             // update different objects
             FileSystemFactory fmanager = context.getFileSystemManager();
             FileSystemView fsview = fmanager
@@ -207,8 +208,12 @@ public class PASS extends AbstractCommand{
             session.setLogin(fsview);
             stat.setLogin(session);
             stat.getCurrentUserLoginNumber(authenticatedUser);
+            
+            LOG.info("Before HadoopEnv!");
+            
             HadoopEnv.createFileSystem(authenticatedUser, session);
 
+            LOG.info("After HadoopEnv!");
             // everything is fine - send login ok message
             session.write(LocalizedFtpReply.translate(session, request, context,
                     FtpReply.REPLY_230_USER_LOGGED_IN, "PASS", userName));

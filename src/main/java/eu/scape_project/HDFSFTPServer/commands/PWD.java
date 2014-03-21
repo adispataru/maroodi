@@ -19,14 +19,12 @@ public class PWD extends AbstractCommand {
 	public void execute(FtpIoSession session, FtpServerContext context,
 			FtpRequest request) throws IOException, FtpException {
 		
-		String userName = session.getUser().getName();
-		
 		FileSystem fs = HadoopEnv.getFileSystem(session.getUser(), session);
 		
 		String currDir = fs.getWorkingDirectory().toString();
 		
 		//user shall not see full path of hdfs system
-		currDir = currDir.replace(HadoopEnv.USER_PATH + userName, "/");
+		currDir = currDir.replace(HadoopEnv.getHomeDirectory(session.getUser()).toString(), "/");
 		
 		if(currDir.length() > 2)
 			if(currDir.charAt(0) == currDir.charAt(1) && currDir.charAt(0) == '/')
