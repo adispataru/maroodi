@@ -15,6 +15,7 @@ import org.apache.hadoop.fs.Path;
 
 public class HadoopEnv {
 	//TODO Make this more generic
+
 	private static Map<String, FileSystem> fss = new HashMap<String, FileSystem>();
 	
 	private static Map<String, String> env = new HashMap<String, String>();
@@ -30,10 +31,8 @@ public class HadoopEnv {
 			return fss.get(userKey);
 		}
 		
-		FileSystem fs = createFileSystem(user, session);
-		
-		
-		return fs;
+		return createFileSystem(user, session);
+
 	}
 	
 	

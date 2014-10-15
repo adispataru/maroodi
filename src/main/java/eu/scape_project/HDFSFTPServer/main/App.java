@@ -41,33 +41,44 @@ import eu.scape_project.HDFSFTPServer.env.HadoopEnv;
 public class App{
  
 	private static final Logger LOG = LoggerFactory.getLogger(App.class);
+
+    private static final String usage = "Usage: to start the server over the HDFS filesystem provide no arguments.\n"+
+                                        "To start the server over the mounted S3FS provide 's3fs' as argument";
+
 	public static void main(String[] args) throws FtpException{
-		
-		try {
-			HadoopEnv.init();
-			LOG.info("Hadoop Environment successfully initiated.");
-		} catch (FileNotFoundException e) {
-			
-			LOG.debug("Cannot find configuration file for hadoop environment!", e);
-		}
+
+        CommandFactoryFactory  cf = new CommandFactoryFactory();
+
+        if(args.length < 1){
+            //HDFS implementation
+            //set commands for HDFS storage
+            cf.addCommand("STOR", new STOR());
+            cf.addCommand("RETR", new RETR());
+            cf.addCommand("LIST", new LIST());
+            cf.addCommand("MLSD", new MLSD());
+            cf.addCommand("APPE", new APPE());
+            cf.addCommand("CWD", new CWD());
+            cf.addCommand("PWD", new PWD());
+            cf.addCommand("PASS", new PASS());
+            cf.addCommand("CDUP", new CDUP());
+            cf.addCommand("RMD", new RMD());
+            cf.addCommand("DELE", new DELE());
+            cf.addCommand("MKD", new MKD());
+            try {
+                HadoopEnv.init();
+                LOG.info("Hadoop Environment successfully initiated.");
+            } catch (FileNotFoundException e) {
+
+                LOG.debug("Cannot find configuration file for hadoop environment!", e);
+            }
+        }else if (!args[0].equals("s3fs")){
+            System.out.println(usage);
+            return;
+        }
+
 		
 		FtpServerFactory serverFactory = new FtpServerFactory();
 		ListenerFactory factory = new ListenerFactory();
-		
-		//set commands for HDFS storage
-		CommandFactoryFactory  cf = new CommandFactoryFactory();
-		cf.addCommand("STOR", new STOR());
-		cf.addCommand("RETR", new RETR());
-		cf.addCommand("LIST", new LIST());
-		cf.addCommand("MLSD", new MLSD());
-		cf.addCommand("APPE", new APPE());
-		cf.addCommand("CWD", new CWD());
-		cf.addCommand("PWD", new PWD());
-		cf.addCommand("PASS", new PASS());
-		cf.addCommand("CDUP", new CDUP());
-		cf.addCommand("RMD", new RMD());
-		cf.addCommand("DELE", new DELE());
-		cf.addCommand("MKD", new MKD());
 		CommandFactory commandFactory = cf.createCommandFactory();
 		
 		// set the port of the listener
@@ -118,7 +129,7 @@ public class App{
 					BaseUser user = new BaseUser();
 					user.setName(username);
 					user.setPassword(new String(passArray));
-					user.setHomeDirectory("/user/" + username);
+					user.setHomeDirectory("/ftp/" + username);
 					List<Authority> auths = new ArrayList<Authority>();
 		            Authority writePerm = new WritePermission();
 		            auths.add(writePerm);
