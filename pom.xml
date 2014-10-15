@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>eu.scape-project</groupId>
-  <artifactId>Maroodi</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <artifactId>maroodi</artifactId>
+  <version>1.0</version>
 
-  <name>Maroodi</name>
-  <url>http://maven.apache.org</url>
+  <name>maroodi</name>
+  <url>https://github.com/adispataru/maroodi</url>
 
   <repositories>
   	<repository>
